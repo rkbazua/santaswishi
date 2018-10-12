@@ -1,0 +1,75 @@
+#Author: rbazua 
+#WishiPets project
+#Setup the IAM users, group and policies
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:  
+    wishiPetsDevsGroup:     #User group for Wishi Pets developers
+        Type: AWS::IAM::Group
+        Properties:
+            GroupName: WishiPetsDevsGroup
+            ManagedPolicyArns: 
+                - "arn:aws:iam::aws:policy/IAMUserChangePassword"                #Policy to force the user to change password
+                - "arn:aws:iam::aws:policy/AWSCodeCommitFullAccess"              #Managed Policy for Code Commit
+                - "arn:aws:iam::aws:policy/AWSLambdaFullAccess"                  #Managed Policy for Lambda
+                - "arn:aws:iam::aws:policy/AmazonS3FullAccess"                   #Managed Policy for S3
+                - "arn:aws:iam::aws:policy/AmazonAPIGatewayInvokeFullAccess"     #Managed Policy for API Gateway Invoke
+                - "arn:aws:iam::aws:policy/AWSCodeDeployFullAccess"              #Managed Policy for Code Deploy
+                - "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator"        #Managed Policy for Api Gateway Administrator
+                - "arn:aws:iam::aws:policy/AWSCodePipelineFullAccess"            #Managed Policy for Code Pipeline
+                - "arn:aws:iam::aws:policy/AWSCodeBuildAdminAccess"              #Managed Policy for Code Build
+                - "arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess"      #Managed Policy for CloudFormation
+        
+    #Setup for user rbazua
+    rbazuaDev:              #Developer rbazua user
+        Type: AWS::IAM::User
+        Properties:
+            LoginProfile:
+                Password: wishis@nt@
+                PasswordResetRequired: True
+            UserName: rbazua
+    rbazuaAccesskey:
+        Type: AWS::IAM::AccessKey
+        Properties:
+            UserName: !Ref rbazuaDev
+    
+    #Setup for user edcgamer
+    edcgamerDev:             #Developer edcgamer user
+        Type: AWS::IAM::User
+        Properties:
+            LoginProfile:
+                Password: wishis@nt@
+                PasswordResetRequired: True
+            UserName: edcgamer
+    edcgamerAccesskey:
+        Type: AWS::IAM::AccessKey
+        Properties:
+            UserName: !Ref edcgamerDev
+            
+    addDevelopersToGroup:    #Add the developers to the dev group
+        Type: AWS::IAM::UserToGroupAddition
+        Properties:
+            GroupName: !Ref wishiPetsDevsGroup
+            Users: 
+                - !Ref rbazuaDev
+                - !Ref edcgamerDev
+                
+Outputs:       
+    #rbazua access and secret keys
+    rbazuaAccessKeyOutput:
+        Description: "rbazua developer access key"
+        Value: !Ref rbazuaAccesskey
+    rbazuaSecretKey: 
+        Description: "rbazua developer secret key"
+        Value: !GetAtt rbazuaAccesskey.SecretAccessKey
+        
+    #edcgamer access and secret keys
+    edcgamerAccessKeyOutput:
+        Description: "edcgamer developer access key"
+        Value: !Ref edcgamerAccesskey
+    
+    edcgamerSecretKey: 
+        Description: "edcgamer developer secret key"
+        Value: !GetAtt edcgamerAccesskey.SecretAccessKey
+        
+        
+            
