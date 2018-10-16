@@ -1,0 +1,23 @@
+#Author: rbazua 
+#WishiPets project
+#Setup the S3 buckets and policies
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:  
+    wishipetsCatalogsBucket:      #Bucket to store the catalogs in json format 
+        Type: AWS::S3::Bucket
+        DeletionPolicy: Retain
+        Properties:
+            BucketName: wishipets-catalogs
+            AccessControl: PublicRead
+            VersioningConfiguration: 
+                Status: Enabled
+                
+    wishipetsGalleriesBucket:      #Bucket to store the catalogs in json format 
+        Type: AWS::S3::Bucket
+        DeletionPolicy: Retain
+        Properties:
+            BucketName: wishipets-galleries
+            AccessControl: PublicRead
+            VersioningConfiguration: 
+                Status: Enabled
+            
