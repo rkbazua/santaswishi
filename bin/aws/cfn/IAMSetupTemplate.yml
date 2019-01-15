@@ -8,16 +8,8 @@ Resources:
         Properties:
             GroupName: WishiPetsDevsGroup
             ManagedPolicyArns: 
+                - "arn:aws:iam::aws:policy/PowerUserAccess"                      #Policy for developers to have admin power, except for IAM
                 - "arn:aws:iam::aws:policy/IAMUserChangePassword"                #Policy to force the user to change password
-                - "arn:aws:iam::aws:policy/AWSCodeCommitFullAccess"              #Managed Policy for Code Commit
-                - "arn:aws:iam::aws:policy/AWSLambdaFullAccess"                  #Managed Policy for Lambda
-                - "arn:aws:iam::aws:policy/AmazonS3FullAccess"                   #Managed Policy for S3
-                - "arn:aws:iam::aws:policy/AmazonAPIGatewayInvokeFullAccess"     #Managed Policy for API Gateway Invoke
-                - "arn:aws:iam::aws:policy/AWSCodeDeployFullAccess"              #Managed Policy for Code Deploy
-                - "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator"        #Managed Policy for Api Gateway Administrator
-                - "arn:aws:iam::aws:policy/AWSCodePipelineFullAccess"            #Managed Policy for Code Pipeline
-                - "arn:aws:iam::aws:policy/AWSCodeBuildAdminAccess"              #Managed Policy for Code Build
-                - "arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess"      #Managed Policy for CloudFormation
         
     #Setup for user rbazua
     rbazuaDev:              #Developer rbazua user
