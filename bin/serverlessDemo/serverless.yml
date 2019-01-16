@@ -1,0 +1,15 @@
+service: mongoConnect
+
+frameworkVersion: ">=1.7.0 <2.0.0"
+
+provider:
+    name: aws
+    runtime: nodejs8.10
+    
+functions:
+    hello:
+        handler: handler.connectMongo
+        events:
+          - http:
+              path: /
+              method: get
