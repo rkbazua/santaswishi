@@ -11,6 +11,7 @@ phases:
     commands:
       - echo `pwd`
       - npm install 
+      - npm install -g serverless
       - serverless deploy 
   post_build:
     commands:
