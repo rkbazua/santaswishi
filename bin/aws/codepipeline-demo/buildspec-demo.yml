@@ -1,4 +1,4 @@
-version: 0.1
+version: 0.2
 
 phases:
   install:
@@ -6,16 +6,16 @@ phases:
       - apt-get update -y
       - apt-get install -y node
       - apt-get install -y npm
+      
   build:
     commands:
-      - cd MyDir  //Expect to be in MyDir now
-      - echo `pwd` //Shows /tmp/blablabla/ instead of /tmp/blablabla/MyDir
-      - npm install //Fails because I'm not in the right directory
-      - bower install
-      - npm run ci
+      - cd ./bin/aws/serverlessDemo 
+      - echo `pwd`
+      - npm install 
+      - serverless deploy 
   post_build:
     commands:
-      - echo Build completed on `date`
+      - echo 'Build completed'
 artifacts:
   files:
     - MyDir/MyFile.war
