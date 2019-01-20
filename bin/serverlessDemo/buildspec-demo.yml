@@ -9,7 +9,6 @@ phases:
       
   build:
     commands:
-      - cd bin/aws/serverlessDemo 
       - echo `pwd`
       - npm install 
       - serverless deploy 
