@@ -40,12 +40,21 @@ class FeederFragment : Fragment() {
             adapter = storiesFeederAdapter
         }
 
+        refreshLayout.setOnRefreshListener {
+            storiesFeeder.visibility = View.GONE
+            feederError.visibility = View.GONE
+            loadingView.visibility = View.VISIBLE
+            viewModel.refreshBypassCache()
+            refreshLayout.isRefreshing = false
+        }
+
         observeViewModel()
     }
 
     fun observeViewModel(){
         viewModel.stories.observe(this, Observer {stories ->
             stories?.let {
+                storiesFeeder.visibility = View.VISIBLE
                 storiesFeederAdapter.updateStoriesList(stories)
             }
         })

@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 
 import com.rbazua.wishipets.R
+import com.rbazua.wishipets.util.getProgressDrawable
+import com.rbazua.wishipets.util.loadImage
 import com.rbazua.wishipets.viewmodel.StoryDetailViewModel
 import kotlinx.android.synthetic.main.fragment_story_detail.*
 import kotlinx.android.synthetic.main.item_story.*
@@ -19,7 +21,7 @@ import kotlinx.android.synthetic.main.item_story.*
 class StoryDetailFragment : Fragment() {
 
     private lateinit var viewModel : StoryDetailViewModel
-    private var petuid = 0
+    private var petuid = "0"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,11 +35,10 @@ class StoryDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(StoryDetailViewModel::class.java)
-        viewModel.fetch()
-
         arguments?.let {
             petuid = StoryDetailFragmentArgs.fromBundle(it).petuid
         }
+        viewModel.fetch(petuid)
 
         observeViewModel()
     }
@@ -47,6 +48,7 @@ class StoryDetailFragment : Fragment() {
             story?.let {
                 detailStoryTitleText.text = story.title
                 detailStoryDescriptionText.text = story.description
+                context?.let { detailStoryPicture.loadImage("https://wishipets-galleries.s3-us-west-1.amazonaws.com/stories/"+story.petuid+"/01.jpg", getProgressDrawable(it)) }
             }
         })
     }

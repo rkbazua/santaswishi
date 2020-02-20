@@ -1,14 +1,20 @@
 package com.rbazua.wishipets.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.rbazua.wishipets.model.Story
+import com.rbazua.wishipets.model.StoryDatabase
+import kotlinx.coroutines.launch
 
-class StoryDetailViewModel : ViewModel() {
+class StoryDetailViewModel(application: Application) : BaseViewModel(application) {
     val storyLiveData = MutableLiveData<Story>()
 
-    fun fetch(){
-        val story1 = Story("1", "Ayúdenme a encontrar a mi perrito", "Hola, mi perrito se escapó de la casa el 26 de septiembre del 2012")
-        storyLiveData.value = story1
+    fun fetch(petuid: String){
+        launch {
+            val story = StoryDatabase(getApplication()).storyDao().getStory(petuid)
+            storyLiveData.value = story
+        }
+
     }
 }
