@@ -3,6 +3,12 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+                name="story"
+                type="com.rbazua.wishipets.model.Story"/>
+    </data>
+
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -12,8 +18,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:src="@mipmap/ic_pancha_icon"
                 android:scaleType="fitCenter"
+                android:imageUrl="@{`https://wishipets-galleries.s3-us-west-1.amazonaws.com/stories/` + story.petuid + `/01.jpg`}"
                 android:minHeight="200dp"/>
         <TextView
                 android:id="@+id/detailStoryTitleText"
@@ -22,7 +28,7 @@
                 android:layout_below="@id/detailStoryPicture"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="4dp"
-                android:text="Title"/>
+                android:text="@{story.title}"/>
         <TextView
                 android:id="@+id/detailStoryDescriptionText"
                 android:layout_width="wrap_content"
@@ -30,6 +36,6 @@
                 android:layout_below="@id/detailStoryTitleText"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="4dp"
-                android:text="Description"/>
+                android:text="@{story.description}"/>
     </RelativeLayout>
 </layout>

@@ -6,12 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 
 import com.rbazua.wishipets.R
+import com.rbazua.wishipets.databinding.FragmentStoryDetailBinding
 import com.rbazua.wishipets.util.getProgressDrawable
 import com.rbazua.wishipets.util.loadImage
 import com.rbazua.wishipets.viewmodel.StoryDetailViewModel
@@ -23,12 +25,14 @@ class StoryDetailFragment : Fragment() {
     private lateinit var viewModel : StoryDetailViewModel
     private var petuid = "0"
 
+    private lateinit var dataBinding: FragmentStoryDetailBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_story_detail, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_story_detail, container, false)
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,9 +50,7 @@ class StoryDetailFragment : Fragment() {
     fun observeViewModel() {
         viewModel.storyLiveData.observe(this, Observer { story ->
             story?.let {
-                detailStoryTitleText.text = story.title
-                detailStoryDescriptionText.text = story.description
-                context?.let { detailStoryPicture.loadImage("https://wishipets-galleries.s3-us-west-1.amazonaws.com/stories/"+story.petuid+"/01.jpg", getProgressDrawable(it)) }
+                dataBinding.story = story
             }
         })
     }
