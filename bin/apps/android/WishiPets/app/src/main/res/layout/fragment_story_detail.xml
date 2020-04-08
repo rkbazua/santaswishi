@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:scaleType="fitCenter"
-                android:imageUrl="@{`https://wishipets-galleries.s3-us-west-1.amazonaws.com/stories/` + story.petuid + `/01.jpg`}"
+                android:imageUrl="@{String.valueOf(story.petuid)}"
                 android:minHeight="200dp"/>
         <TextView
                 android:id="@+id/detailStoryTitleText"

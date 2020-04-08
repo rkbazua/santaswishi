@@ -28,7 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:imageUrl="@{`https://wishipets-galleries.s3-us-west-1.amazonaws.com/stories/` + story.petuid + `/01.jpg`}"
+                android:imageUrl="@{String.valueOf(story.petuid)}"
                 android:padding="4dp"/>
         <LinearLayout
                 android:layout_width="0dp"

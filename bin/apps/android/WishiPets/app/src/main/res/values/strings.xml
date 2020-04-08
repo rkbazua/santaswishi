@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">WishiPets</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="feeder_loading_error">Ha ocurrido un error cargando las historias</string>
+    <string name="BASE_IMG_URL">https://wishipets-galleries.s3-us-west-1.amazonaws.com/stories/</string>
 </resources>

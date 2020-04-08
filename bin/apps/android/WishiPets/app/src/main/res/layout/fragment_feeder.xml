@@ -13,7 +13,6 @@
                 android:layout_height="match_parent"
                 tools:context=".view.FeederFragment">
 
-
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/storiesFeeder"
                     android:layout_width="0dp"
@@ -35,7 +34,7 @@
                     android:id="@+id/feederError"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="An error ocurred while loading data"
+                    android:text="@string/feeder_loading_error"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
@@ -44,7 +43,8 @@
                     android:layout_marginStart="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toTopOf="@+id/storiesFeeder"/>
+                    app:layout_constraintTop_toTopOf="@+id/storiesFeeder"
+                    android:visibility="gone"/>
 
             <ProgressBar
                     android:id="@+id/loadingView"

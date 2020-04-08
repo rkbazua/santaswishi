@@ -21,9 +21,13 @@ fun ImageView.loadImage(uri: String?, progressDrawable: CircularProgressDrawable
         .placeholder(progressDrawable)
         .error(R.mipmap.ic_pancha_icon)
     Glide.with(context)
+        .setDefaultRequestOptions(options)
+        .load(uri)
+        .into(this)
 }
 
 @BindingAdapter("android:imageUrl")
 fun loadImage(view: ImageView, url: String) {
-    view.loadImage(url, getProgressDrawable(view.context))
+    val completeUrl = PetsConstants.BASE_IMG_URL + url +"/01.jpg"
+    view.loadImage(completeUrl, getProgressDrawable(view.context))
 }

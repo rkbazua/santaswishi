@@ -1,15 +1,16 @@
 package com.rbazua.wishipets.model
 
+import com.rbazua.wishipets.util.PetsConstants
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class StoriesApiService {
-    private val BASE_URL = "https://ftc8bwat3c.execute-api.us-east-1.amazonaws.com/dev/"
+    private val baseURL = PetsConstants.BASE_SERVICE_URL
 
     private val api = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(baseURL)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.rbazua.wishipets.model.StoriesApiService
 import com.rbazua.wishipets.model.Story
 import com.rbazua.wishipets.model.StoryDatabase
+import com.rbazua.wishipets.util.NotificationsHelper
 import com.rbazua.wishipets.util.SharedPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -26,6 +27,7 @@ class FeederViewModel(application: Application): BaseViewModel(application) {
     val loading = MutableLiveData<Boolean>()
 
     fun refresh() {
+        checkCacheDuration()
         val updateTime = prefsHelper.getUpdateTime()
         if(updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
             fetchFromDatabase()
@@ -38,12 +40,24 @@ class FeederViewModel(application: Application): BaseViewModel(application) {
     {
         fetchFromRemote()
     }
+
+    private fun checkCacheDuration() {
+        val cachePreference = prefsHelper.getCacheDuration()
+
+        try{
+            val cachePreferenceInt = cachePreference?.toInt() ?: 5*60
+            refreshTime = cachePreferenceInt.times(1000 * 1000 * 1000L)
+        } catch(e: NumberFormatException){
+            e.printStackTrace()
+        }
+    }
+
     private fun fetchFromDatabase() {
         //loading.value = true
         launch {
             val stories = StoryDatabase(getApplication()).storyDao().getAllStories()
             storiesRetrieved(stories)
-            Toast.makeText(getApplication(), "Stories retrieved from database", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(getApplication(), "Stories retrieved from database", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -57,7 +71,8 @@ class FeederViewModel(application: Application): BaseViewModel(application) {
 
                     override fun onSuccess(storiesList: List<Story>) {
                         storeStoriesLocally(storiesList)
-                        Toast.makeText(getApplication(), "Stories retrieved from endpoint", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(getApplication(), "Stories retrieved from endpoint", Toast.LENGTH_SHORT).show()
+                        //NotificationsHelper(getApplication()).createNotification()
                     }
 
                     override fun onError(e: Throwable) {
