@@ -1,6 +1,5 @@
 package com.rbazua.wishipets.view
 
-
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -8,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.rbazua.wishipets.R
 import com.rbazua.wishipets.viewmodel.FeederViewModel
@@ -17,6 +17,7 @@ class FeederFragment : Fragment() {
 
     private lateinit var viewModel: FeederViewModel
     private val storiesFeederAdapter = StoriesFeederAdapter(arrayListOf())
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,11 +32,25 @@ class FeederFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(FeederViewModel::class.java)
-        viewModel.refresh()
+        viewModel.refreshBypassCache()
+        val rvLayoutManager = LinearLayoutManager(context);
 
         storiesFeeder.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = rvLayoutManager
             adapter = storiesFeederAdapter
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val visibleItemCount = rvLayoutManager.getChildCount();
+                    val totalItemCount = rvLayoutManager.getItemCount();
+                    val pastVisibleItems = rvLayoutManager.findFirstVisibleItemPosition();
+                    if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+                        feederError.visibility = View.GONE
+                        viewModel.refreshBypassCache()
+                        refreshLayout.isRefreshing = false
+                    }
+                }
+            })
         }
 
         refreshLayout.setOnRefreshListener {
@@ -49,11 +64,11 @@ class FeederFragment : Fragment() {
         observeViewModel()
     }
 
-    fun observeViewModel(){
+    private fun observeViewModel(){
         viewModel.stories.observe(this, Observer {stories ->
             stories?.let {
                 storiesFeeder.visibility = View.VISIBLE
-                storiesFeederAdapter.updateStoriesList(stories)
+                storiesFeederAdapter.updateStoriesList(stories.toList())
             }
         })
 

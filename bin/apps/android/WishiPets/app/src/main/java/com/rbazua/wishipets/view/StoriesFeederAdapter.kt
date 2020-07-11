@@ -1,5 +1,6 @@
 package com.rbazua.wishipets.view
 
+import android.util.ArraySet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,14 +18,15 @@ import kotlinx.android.synthetic.main.item_story.view.*
 class StoriesFeederAdapter (val storiesList: ArrayList<Story>) : RecyclerView.Adapter<StoriesFeederAdapter.StoryViewHolder>(), StoryClickListener {
 
     fun updateStoriesList(newStoriesList: List<Story>) {
-        storiesList.clear()
         storiesList.addAll(newStoriesList)
+        val storiesListWithoutDuplicated = storiesList.distinct()
+        storiesList.clear()
+        storiesList.addAll(storiesListWithoutDuplicated)
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        //val view = inflater.inflate(R.layout.item_story, parent,false)
         val view = DataBindingUtil.inflate<ItemStoryBinding>(inflater, R.layout.item_story, parent, false)
         return StoryViewHolder(view)
     }
@@ -32,7 +34,7 @@ class StoriesFeederAdapter (val storiesList: ArrayList<Story>) : RecyclerView.Ad
     override fun getItemCount() = storiesList.size
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
-        holder.view.story = storiesList[position]
+        holder.view.story = storiesList.elementAt(position)
         holder.view.listener = this
     }
 
